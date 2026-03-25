@@ -39,6 +39,8 @@ Three starter profiles are created automatically: `frontend-dev`, `unity-dev`, `
 | `agentsync unlink [--profile <name>]` | Remove symlinks from the current project |
 | `agentsync scan` | Find unmanaged skill files and decide what to do with them |
 | `agentsync doctor` | Check for broken symlinks and config issues |
+| `agentsync help [<command>]` | Show help for a specific command (or general help) |
+| `agentsync --help` | Show help |
 
 ## Skill Structure
 

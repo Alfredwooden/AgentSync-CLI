@@ -15,6 +15,9 @@ program
   .description('Unified Skill and Instruction management for AI coding assistants')
   .version('0.1.0');
 
+// Ensure `agentsync help [cmd]` is available (commander may auto-add it, but this makes it explicit).
+program.helpCommand('help [cmd]');
+
 program
   .command('create')
   .description('Create a new skill locally or pull one from VoltAgents')

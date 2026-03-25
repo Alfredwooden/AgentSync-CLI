@@ -14,6 +14,10 @@ npm link
 
 ## Command Walkthrough
 
+### `agentsync --help` / `agentsync help [<command>]`
+
+Shows usage information for the CLI or a specific command.
+
 ### `agentsync init`
 
 Run once per project to create the agent directories.
