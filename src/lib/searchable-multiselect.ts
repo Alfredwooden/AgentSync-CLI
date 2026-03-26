@@ -11,11 +11,12 @@ const MAX_VISIBLE = 12;
 export async function searchableMultiselect(opts: {
   message: string;
   options: SelectOption[];
+  initialSelected?: string[];
 }): Promise<string[] | null> {
   const { message, options } = opts;
 
   return new Promise(resolve => {
-    const selected = new Set<string>();
+    const selected = new Set<string>(opts.initialSelected ?? []);
     let query = '';
     let cursor = 0;
     let scrollOffset = 0;

@@ -7,6 +7,7 @@ import { unlinkCommand } from './commands/unlink';
 import { doctorCommand } from './commands/doctor';
 import { createCommand } from './commands/create';
 import { scanCommand } from './commands/scan';
+import { importCommand } from './commands/import';
 
 const program = new Command();
 
@@ -17,6 +18,12 @@ program
 
 // Ensure `agentsync help [cmd]` is available (commander may auto-add it, but this makes it explicit).
 program.helpCommand('help [cmd]');
+
+program
+  .command('import')
+  .description('Import agent files (.agent.md / .md) from a project directory into the library')
+  .option('-d, --dir <path>', 'Source directory to scan (defaults to .github/agents, .claude/agents, .cursor/rules)')
+  .action((opts: { dir?: string }) => importCommand(opts));
 
 program
   .command('create')

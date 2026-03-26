@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import pc from 'picocolors';
 import * as p from '@clack/prompts';
 import { loadConfig, saveConfig } from '../lib/config';
-import { createSymlink } from '../lib/symlink';
+import { createSymlink, createFileSymlink, agentTargetFilename } from '../lib/symlink';
 import { searchableMultiselect } from '../lib/searchable-multiselect';
 
 export async function linkCommand(profileName: string): Promise<void> {
@@ -58,10 +58,24 @@ export async function linkCommand(profileName: string): Promise<void> {
   const results = [];
   for (const target of profile.targets) {
     const targetDir = path.join(cwd, target.path);
+    const isAgentTarget = target.type === 'agent';
+
     for (const skill of profile.skills) {
-      const sourcePath = path.join(config.libraryPath, skill);
-      const result = await createSymlink(sourcePath, targetDir, skill, target.agent);
-      results.push(result);
+      const agentFile = path.join(config.libraryPath, skill, 'agent.md');
+      const isAgentEntry = await fs.pathExists(agentFile);
+
+      if (isAgentTarget && isAgentEntry) {
+        // File symlink: agent.md → <targetDir>/<skill>.<ext>
+        const fileName = agentTargetFilename(target.agent, skill);
+        const result = await createFileSymlink(agentFile, targetDir, fileName, target.agent);
+        results.push(result);
+      } else if (!isAgentTarget && !isAgentEntry) {
+        // Directory symlink: existing skill behaviour
+        const sourcePath = path.join(config.libraryPath, skill);
+        const result = await createSymlink(sourcePath, targetDir, skill, target.agent);
+        results.push(result);
+      }
+      // type mismatch (agent entry in skill target or vice-versa) → skip silently
     }
   }
 

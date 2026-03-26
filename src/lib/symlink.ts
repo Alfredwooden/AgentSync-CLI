@@ -9,6 +9,53 @@ export interface SymlinkResult {
   message?: string;
 }
 
+/** Maps a tool name to the filename extension used for agent files. */
+export function agentTargetFilename(agent: string, skillName: string): string {
+  switch (agent) {
+    case 'copilot': return `${skillName}.agent.md`;
+    case 'cursor': return `${skillName}.mdc`;
+    default: return `${skillName}.md`;
+  }
+}
+
+/**
+ * Creates a file-level symlink (for agent-type library entries).
+ * linkName is the full filename including extension (e.g. "boss.md").
+ */
+export async function createFileSymlink(
+  sourceFile: string,
+  targetDir: string,
+  linkName: string,
+  agent: string
+): Promise<SymlinkResult> {
+  const linkPath = path.join(targetDir, linkName);
+  const skillName = linkName.replace(/\.(agent\.md|mdc|md)$/, '');
+  const base = { skill: skillName, target: targetDir, agent };
+
+  try {
+    if (!await fs.pathExists(sourceFile)) {
+      return { ...base, status: 'error', message: `Source not found: ${sourceFile}` };
+    }
+
+    await fs.ensureDir(targetDir);
+
+    let existingStat;
+    try {
+      existingStat = await fs.lstat(linkPath);
+    } catch { /* doesn't exist — fall through */ }
+
+    if (existingStat) {
+      if (existingStat.isSymbolicLink()) return { ...base, status: 'exists' };
+      return { ...base, status: 'error', message: `Path exists and is not a symlink: ${linkPath}` };
+    }
+
+    await fs.symlink(sourceFile, linkPath, 'file');
+    return { ...base, status: 'created' };
+  } catch (err) {
+    return { ...base, status: 'error', message: err instanceof Error ? err.message : String(err) };
+  }
+}
+
 export async function createSymlink(
   sourcePath: string,
   targetDir: string,

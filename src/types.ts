@@ -1,6 +1,8 @@
 export interface AgentTarget {
   agent: string;
   path: string;
+  /** 'skill' = directory symlink (default); 'agent' = single-file symlink */
+  type?: 'skill' | 'agent';
 }
 
 export interface Profile {

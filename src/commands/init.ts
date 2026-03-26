@@ -10,10 +10,12 @@ interface AgentEntry {
 }
 
 const AGENTS: AgentEntry[] = [
-  { agent: 'Claude Code', dir: '.claude/skills', marker: '.claude' },
+  { agent: 'Claude Code (skills)', dir: '.claude/skills', marker: '.claude' },
+  { agent: 'Claude Code (agents)', dir: '.claude/agents', marker: '.claude' },
   { agent: 'Cursor', dir: '.cursor/rules', marker: '.cursor' },
   { agent: 'Gemini CLI', dir: '.gemini/skills', marker: '.gemini' },
-  { agent: 'Copilot', dir: '.github/skills', marker: '.github' },
+  { agent: 'Copilot (skills)', dir: '.github/skills', marker: '.github' },
+  { agent: 'Copilot (agents)', dir: '.github/agents', marker: '.github' },
   { agent: 'Codex', dir: '.codex/skills', marker: '.codex' },
 ];
 

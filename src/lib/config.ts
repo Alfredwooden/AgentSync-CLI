@@ -19,6 +19,9 @@ const DEFAULT_CONFIG: AgentSyncConfig = {
         { agent: 'claude', path: '.claude/skills' },
         { agent: 'gemini', path: '.gemini/skills' },
         { agent: 'copilot', path: '.github/skills' },
+        { agent: 'cursor', path: '.cursor/rules', type: 'agent' },
+        { agent: 'claude', path: '.claude/agents', type: 'agent' },
+        { agent: 'copilot', path: '.github/agents', type: 'agent' },
       ],
     },
     {
@@ -29,6 +32,8 @@ const DEFAULT_CONFIG: AgentSyncConfig = {
         { agent: 'cursor', path: '.cursor/rules' },
         { agent: 'claude', path: '.claude/skills' },
         { agent: 'codex', path: '.codex/skills' },
+        { agent: 'cursor', path: '.cursor/rules', type: 'agent' },
+        { agent: 'claude', path: '.claude/agents', type: 'agent' },
       ],
     },
     {
@@ -38,6 +43,7 @@ const DEFAULT_CONFIG: AgentSyncConfig = {
       targets: [
         { agent: 'claude', path: '.claude/skills' },
         { agent: 'gemini', path: '.gemini/skills' },
+        { agent: 'claude', path: '.claude/agents', type: 'agent' },
       ],
     },
   ],
