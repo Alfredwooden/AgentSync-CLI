@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(else echo:*)",
+      "Bash(fi done:*)",
+      "WebFetch(domain:openspec.dev)"
+    ]
+  }
+}

@@ -20,6 +20,13 @@ interface AgentFile {
   content: string;
 }
 
+/** Inject `name: <slug>` into frontmatter if it's missing. */
+function ensureNameInFrontmatter(content: string, name: string): string {
+  if (!/^---/m.test(content)) return content;
+  if (/^name:/m.test(content)) return content;
+  return content.replace(/^---\r?\n/, `---\nname: ${name}\n`);
+}
+
 /** Pull the description value out of YAML-ish frontmatter. */
 function extractDescription(content: string): string {
   const fmMatch = content.match(/^---\s*\n([\s\S]*?)\n---/);
@@ -162,7 +169,7 @@ export async function importCommand(opts: { dir?: string }): Promise<void> {
     }
 
     await fs.ensureDir(destDir);
-    await fs.writeFile(destFile, f.content, 'utf-8');
+    await fs.writeFile(destFile, ensureNameInFrontmatter(f.content, f.name), 'utf-8');
     imported.push(f.name);
   }
 
